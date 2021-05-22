@@ -1,8 +1,10 @@
 package app;
 
 
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,19 +16,26 @@ import java.time.format.DateTimeFormatter;
  *
  * @author marti_000
  */
-public class Driver {
+public class Driver implements Comparable<Driver>{
+    //hodnoty pro konstruktor
     private String firstName;
     private String secondName;
     private int testPoints;
     private char gender;
     private LocalDate testDate;
+    private int id;
+    
+    //hodnoty pro settre
+    private boolean driveTest;
+    private LocalDate driveDate;
 
-    public Driver(String firstName, String secondName, int testPoints, char gender, LocalDate testDate) {
+    public Driver(String firstName, String secondName, int testPoints, char gender, LocalDate testDate, int id) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.testPoints = testPoints;
         this.gender = gender;
         this.testDate = testDate;
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -49,9 +58,27 @@ public class Driver {
         return testDate;
     }
 
+    public int getId() {
+        return id;
+    }    
+
+    public void setDriveTest(boolean driveTest) {
+        this.driveTest = driveTest;
+    }
+
+    public void setDriveDate(LocalDate driveDate) {
+        this.driveDate = driveDate;
+    }     
+
     @Override
     public String toString() {
-        return String.format("%10s %10s %d %s %s", firstName,secondName,testPoints,gender,testDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        return  String.format("%10s %10s %s %d %5b %s", firstName,secondName,gender,testPoints,driveTest,testDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+    }
+
+    @Override
+    public int compareTo(Driver o) {
+        Collator col = Collator.getInstance(new Locale("cs", "CZ"));
+        return col.compare(this.secondName,o.secondName);
     }
     
     
