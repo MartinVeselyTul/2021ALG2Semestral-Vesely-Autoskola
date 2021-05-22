@@ -14,14 +14,14 @@ import java.time.format.DateTimeFormatter;
  *
  * @author marti_000
  */
-public class Jezdec {
+public class Driver {
     private String firstName;
     private String secondName;
     private int testPoints;
     private char gender;
     private LocalDate testDate;
 
-    public Jezdec(String firstName, String secondName, int testPoints, char gender, LocalDate testDate) {
+    public Driver(String firstName, String secondName, int testPoints, char gender, LocalDate testDate) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.testPoints = testPoints;
