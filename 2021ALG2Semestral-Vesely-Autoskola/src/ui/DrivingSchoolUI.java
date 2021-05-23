@@ -26,7 +26,7 @@ public class DrivingSchoolUI {
                     System.out.println("Zadejte název souboru s teoretickými testy");
                     //ds.loadResults("data/" + sc.next());
                     ds.loadResults("data/autoskola_testy.csv");
-                    //System.out.println(ds.printResults());
+                    //System.out.println(ds.printAllDrivers());
                     break;
                 } catch (FileNotFoundException e) {
                     System.out.println("Zadaný soubor neexistuje.");
@@ -43,8 +43,21 @@ public class DrivingSchoolUI {
                 }
             }
             //ds.saveResults("vysledky.txt");
-            System.out.println("");
-            System.out.println(ds.printResults());
+            System.out.println("Účastníci autoškoly");
+            System.out.println(ds.printHeader());
+            System.out.println(ds.printAllDrivers());
+            
+            System.out.println("Udělali autoškolu");
+            System.out.println(ds.printHeader());
+            System.out.println(ds.printPassedDrivers());
+            
+            System.out.println("Neudělali testy");
+            System.out.println(ds.printHeader());
+            System.out.println(ds.printDidintPassedTheory());
+            
+            System.out.println("Neudělali závěrečné jízdy");
+            System.out.println(ds.printHeader());
+            System.out.println(ds.printDidntPassedDriving());
         } catch (IOException e) {
             System.out.println("Nastal problém" + e.getMessage());
         }

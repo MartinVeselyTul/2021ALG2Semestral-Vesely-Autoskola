@@ -26,7 +26,6 @@ public class Driver implements Comparable<Driver>{
     private int id;
     
     //hodnoty pro settre
-    private boolean driveTest;
     private LocalDate driveDate;
 
     public Driver(String firstName, String secondName, int testPoints, char gender, LocalDate testDate, int id) {
@@ -60,21 +59,17 @@ public class Driver implements Comparable<Driver>{
 
     public int getId() {
         return id;
-    }    
-
-    public void setDriveTest(boolean driveTest) {
-        this.driveTest = driveTest;
-    }
+    }        
 
     public void setDriveDate(LocalDate driveDate) {
         this.driveDate = driveDate;
     }     
 
     @Override
-    public String toString() {
-        return  String.format("%10s %10s %s %d %5b %s", firstName,secondName,gender,testPoints,driveTest,testDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+    public String toString() {        
+        return  String.format("%10s %10s %4s %9d", firstName,secondName,gender,testPoints);        
     }
-
+    
     @Override
     public int compareTo(Driver o) {
         Collator col = Collator.getInstance(new Locale("cs", "CZ"));

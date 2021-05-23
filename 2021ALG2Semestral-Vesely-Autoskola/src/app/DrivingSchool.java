@@ -28,12 +28,18 @@ public class DrivingSchool {
     static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private List<Driver> drivers;
-
+    private List<Driver> passedTests;
+    private List<Driver> didntPassedTheory;
+    private List<Driver> didntPassedDriving;
+    
     private int testMaxPoints;
     private int testPassPoints;
 
     public DrivingSchool() {
         drivers = new ArrayList<>();
+        passedTests = new ArrayList<>();
+        didntPassedTheory = new ArrayList<>();
+        didntPassedDriving = new ArrayList<>();
     }
 
     public void loadResults(String filename) throws FileNotFoundException, IOException {
@@ -66,7 +72,7 @@ public class DrivingSchool {
         }
     }
 
-    public String printResults() {
+    public String printAllDrivers() {
         Collections.sort(drivers);
         StringBuilder sb = new StringBuilder();
         for (Driver d : drivers) {
@@ -74,7 +80,20 @@ public class DrivingSchool {
         }
         return sb.toString();
     }
-
+    
+    public String printPassedDrivers() {
+        Collections.sort(passedTests);
+        StringBuilder sb = new StringBuilder();
+        for (Driver d : passedTests) {
+            sb.append(d).append("\n");
+        }
+        return sb.toString();
+    }
+    
+    public String printHeader(){
+        return String.format("%10s %10s %7s %10s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů");
+    }
+    
     public void saveResults(String filename) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
             for (Driver driver : drivers) {
@@ -104,19 +123,50 @@ public class DrivingSchool {
             String line;
             String[] parts;
             br.readLine();
+            Driver d;
             while ((line = br.readLine()) != null) {
                 parts = line.split(","); //jmeno prijimeni,pocet bodu,datum(yyyy-mm-dd),pohlavi
                 id = Integer.parseInt(parts[0]);
                 driveTest = Boolean.parseBoolean(parts[1]);
                 driveDate = LocalDate.parse(parts[2], dtf);
-                for (Driver d : drivers) {
-                    if (d.getId() == id) {
-                        d.setDriveTest(driveTest);
-                       // d.setDriveDate(driveDate);
-                    } 
+                if (driveTest == true) {
+                    for (Driver r : drivers) {
+                        if (r.getId() == id){
+                            r.setDriveDate(driveDate);
+                            passedTests.add(r);
+                        }
+                    }
+                } else {
+                    for (Driver r : drivers) {
+                        if (r.getId() == id){
+                            didntPassedDriving.add(r);
+                        }
+                    }
                 }
-
             }
         }
+    }
+    
+    public String printDidintPassedTheory() {
+        for (Driver d : drivers) {
+            if(d.getTestPoints() < 45){
+                didntPassedTheory.add(d);
+            }                
+        }       
+        Collections.sort(didntPassedTheory);
+        StringBuilder sb = new StringBuilder();
+        for (Driver d : didntPassedTheory) {
+            sb.append(d).append("\n");
+        }
+        return sb.toString();
+    }
+    
+    public String printDidntPassedDriving() {               
+        Collections.sort(didntPassedDriving);
+        StringBuilder sb = new StringBuilder();
+        for (Driver d : didntPassedDriving) {
+            sb.append(d).append("\n");
+        }
+        return sb.toString();
     }
 }
