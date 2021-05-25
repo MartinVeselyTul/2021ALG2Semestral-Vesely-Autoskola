@@ -1,5 +1,9 @@
 package app;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,9 +36,7 @@ public class DrivingSchool {
     private List<Driver> didntPassedTheory;
     private List<Driver> didntPassedDriving;
     
-    private int testMaxPoints;
-    private int testPassPoints;
-
+    
     public DrivingSchool() {
         drivers = new ArrayList<>();
         passedTests = new ArrayList<>();
@@ -72,28 +74,60 @@ public class DrivingSchool {
         }
     }
 
-    public String printAllDrivers() {
+    public String printAllDrivers(int n) {
         Collections.sort(drivers);
         StringBuilder sb = new StringBuilder();
         for (Driver d : drivers) {
-            sb.append(d).append("\n");
+            switch (n){
+                case 1:
+                    sb.append(d).append("\n");
+                    break;
+                case 2:
+                    if(d.getGender() == 'F'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                case 3:
+                    if(d.getGender() == 'M'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                default:
+                    return "něco je špatně";
+            }
         }
         return sb.toString();
     }
-    
-    public String printPassedDrivers() {
+
+    public String printPassedDrivers(int n) {
         Collections.sort(passedTests);
         StringBuilder sb = new StringBuilder();
         for (Driver d : passedTests) {
-            sb.append(d).append("\n");
+            switch (n){
+                case 1:
+                    sb.append(d).append("\n");
+                    break;
+                case 2:
+                    if(d.getGender() == 'F'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                case 3:
+                    if(d.getGender() == 'M'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                default:
+                    return "něco je špatně";
+            }
         }
         return sb.toString();
     }
-    
-    public String printHeader(){
+
+    public String printHeader() {
         return String.format("%10s %10s %7s %10s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů");
     }
-    
+
     public void saveResults(String filename) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
             for (Driver driver : drivers) {
@@ -101,20 +135,7 @@ public class DrivingSchool {
             }
         }
     }
-
-    public void loadTestPoints(String filename) throws FileNotFoundException, IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))) {
-            String line;
-            String[] parts;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                parts = line.split(","); //jmeno prijimeni,pocet bodu,datum(yyyy-mm-dd),pohlavi
-                this.testPassPoints = Integer.parseInt(parts[0]);
-                this.testMaxPoints = Integer.parseInt(parts[1]);
-            }
-        }
-    }
-
+    
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))) {
             boolean driveTest;
@@ -131,14 +152,14 @@ public class DrivingSchool {
                 driveDate = LocalDate.parse(parts[2], dtf);
                 if (driveTest == true) {
                     for (Driver r : drivers) {
-                        if (r.getId() == id){
+                        if (r.getId() == id) {
                             r.setDriveDate(driveDate);
                             passedTests.add(r);
                         }
                     }
                 } else {
                     for (Driver r : drivers) {
-                        if (r.getId() == id){
+                        if (r.getId() == id) {
                             didntPassedDriving.add(r);
                         }
                     }
@@ -146,27 +167,74 @@ public class DrivingSchool {
             }
         }
     }
-    
-    public String printDidintPassedTheory() {
+
+    public String printDidintPassedTheory(int n) {
         for (Driver d : drivers) {
-            if(d.getTestPoints() < 45){
+            if (d.getTestPoints() < 45) {
                 didntPassedTheory.add(d);
-            }                
-        }       
+            }
+        }
         Collections.sort(didntPassedTheory);
         StringBuilder sb = new StringBuilder();
         for (Driver d : didntPassedTheory) {
-            sb.append(d).append("\n");
+            switch (n){
+                case 1:
+                    sb.append(d).append("\n");
+                    break;
+                case 2:
+                    if(d.getGender() == 'F'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                case 3:
+                    if(d.getGender() == 'M'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                default:
+                    return "něco je špatně";
+            }
         }
         return sb.toString();
     }
-    
-    public String printDidntPassedDriving() {               
-        Collections.sort(didntPassedDriving);
+
+    public String printDidntPassedDriving(int n) {        
         StringBuilder sb = new StringBuilder();
         for (Driver d : didntPassedDriving) {
-            sb.append(d).append("\n");
+            switch (n){
+                case 1:
+                    sb.append(d).append("\n");
+                    break;
+                case 2:
+                    if(d.getGender() == 'F'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                case 3:
+                    if(d.getGender() == 'M'){
+                        sb.append(d).append("\n");                        
+                    }
+                    break;
+                default:
+                    return "něco je špatně";
+            }
+            
         }
         return sb.toString();
     }
+//    public void savePDF(String filename) throws FileNotFoundException {
+//        PdfWriter writer = new PdfWriter(filename);
+//        PdfDocument pdf = new PdfDocument(writer);
+//        Document document = new Document(pdf);
+//        document.add(new Paragraph("Hello World!"));
+//        document.close();
+////            StringBuilder sb = new StringBuilder();
+////            for (Driver d : didntPassedTheory) {
+////                sb.append(d).append("\n");
+////            }
+////            Paragraph kokot = new Paragraph(sb.toString());
+////            document.add(kokot);
+//        
+//        System.out.println("List added");
+//    }
 }
