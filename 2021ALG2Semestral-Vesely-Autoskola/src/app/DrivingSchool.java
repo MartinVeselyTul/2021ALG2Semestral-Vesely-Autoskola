@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import utils.AppInterface;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author MartinVesely
  */
-public class DrivingSchool {
+public class DrivingSchool implements AppInterface{
 
     static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -44,6 +45,13 @@ public class DrivingSchool {
         didntPassedDriving = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param filename
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @Override
     public void loadResults(String filename) throws FileNotFoundException, IOException {
 
         try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))) {
@@ -78,6 +86,13 @@ public class DrivingSchool {
         }
     }
 
+    /**
+     *
+     * @param n
+     * @param compare
+     * @return
+     */
+    @Override
     public String printAllDrivers(int n, int compare) {
         if (compare == 1) {
             sortPoints sp = new sortPoints();
@@ -117,6 +132,13 @@ public class DrivingSchool {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param n
+     * @param compare
+     * @return
+     */
+    @Override
     public String printPassedDrivers(int n, int compare) {
         if (compare == 1) {
             sortPoints sp = new sortPoints();
@@ -158,10 +180,16 @@ public class DrivingSchool {
         return sb.toString();
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public String printHeader() {
         return String.format("%10s %10s %7s %10s %15s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů", "Datum narození");
     }
 
+    @Override
     public void saveResults(String filename, int choice) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
             switch (choice) {
@@ -192,6 +220,13 @@ public class DrivingSchool {
         }
     }
 
+    /**
+     *
+     * @param filename
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @Override
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))) {
             boolean driveTest;
@@ -225,6 +260,13 @@ public class DrivingSchool {
         }
     }
 
+    /**
+     *
+     * @param n
+     * @param compare
+     * @return
+     */
+    @Override
     public String printDidintPassedTheory(int n, int compare) {
         if (compare == 1) {
             sortPoints sp = new sortPoints();
@@ -266,6 +308,13 @@ public class DrivingSchool {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param n
+     * @param compare
+     * @return
+     */
+    @Override
     public String printDidntPassedDriving(int n, int compare) {
         if (compare == 1) {
             sortPoints sp = new sortPoints();

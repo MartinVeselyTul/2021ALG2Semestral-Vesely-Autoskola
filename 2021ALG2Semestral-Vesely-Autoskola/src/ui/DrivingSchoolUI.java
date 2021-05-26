@@ -2,7 +2,6 @@ package ui;
 
 import app.DrivingSchool;
 import app.UICodeSaver;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;

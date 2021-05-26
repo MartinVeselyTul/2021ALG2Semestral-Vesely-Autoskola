@@ -5,14 +5,21 @@
  */
 package app;
 
+import utils.InterfaceUI;
+
 
 /**
  *
  * @author MartinVesely
  */
-public class UICodeSaver {
+public class UICodeSaver implements InterfaceUI{
 
-    public static String menu() {
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String menu() {
         String[] par = new String[7];
         par[0] = "Výběrové menu (zmáčkněte prosím číslo vašeho výběru)";
         par[1] = "1. výpis všech účastníků autoškoly";
@@ -33,7 +40,12 @@ public class UICodeSaver {
         return sb.toString();
     }
 
-    public static String start() {
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String start() {
         String[] par = new String[7];
         par[0] = "Tento program vyhodnocuje, jací žáci udělali autoškolu.";
         par[1] = "Pro splnění autoškoly je třeba splnit teoretický test na min 44 bodů a následně splnit závěrečné zkoušky.";
@@ -54,7 +66,12 @@ public class UICodeSaver {
         return sb.toString();
     }
 
-    public static String filtr() {
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String filtr() {
         String[] par = new String[8];
         par[0] = "Filtrování, vyberte ze seznamu způsob filtrování";
         par[1] = "";
@@ -76,7 +93,8 @@ public class UICodeSaver {
         return sb.toString();
     }
     
-    public static String filtering(int n, DrivingSchool ds, int gender, int tableChoice){
+    @Override
+    public String filtering(int n, DrivingSchool ds, int gender, int tableChoice){
         tableChoice = tableChoice - 1;
         int sort = 0;
         
@@ -140,7 +158,16 @@ public class UICodeSaver {
         }        
     }
 
-    public static String usersChoice(int n, DrivingSchool ds, int gender, int sort) {        
+    /**
+     *
+     * @param n
+     * @param ds
+     * @param gender
+     * @param sort
+     * @return
+     */
+    @Override
+    public String usersChoice(int n, DrivingSchool ds, int gender, int sort) {        
         switch (n) {
             case 1:
                 return "Účastníci autoškoly" + "\n"
@@ -163,7 +190,12 @@ public class UICodeSaver {
         }
     }
 
-    public static String savingFormat() {
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String savingFormat() {
         String[] par = new String[5];
         par[0] = "Vyberte, v jaké formátu chcete soubor uložit.";
         par[1] = " ";
@@ -181,18 +213,18 @@ public class UICodeSaver {
         }
         return sb.toString();
     }
-
-    public static void main(String[] args) {
-        //testovani vypisu stringu pro hlavni UI
-
-        System.out.println(menu());
-        System.out.println("");
-        System.out.println(start());
-        System.out.println("");
-        System.out.println(filtr());
-        System.out.println("");
-        System.out.println(savingFormat());
-
-    }
+// main jsem využíval před vytvořením interface
+//    public static void main(String[] args) {
+//        //testovani vypisu stringu pro hlavni UI
+//        
+//        System.out.println(menu());
+//        System.out.println("");
+//        System.out.println(start());
+//        System.out.println("");
+//        System.out.println(filtr());
+//        System.out.println("");
+//        System.out.println(savingFormat());
+//
+//    }
 }
 //testování jsem dělal přes DrivingSchool UI, abych zjistil, že i volání na metody funguje
