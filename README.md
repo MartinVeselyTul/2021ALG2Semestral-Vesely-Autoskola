@@ -1,1 +1,2 @@
 # 2021ALG2Semestral-Vesely-Autoskola
+Program autoškola bude zpracovávat výsledky autoškoly po teoretických testech a závěrečných zkouškách. Vstupem jsou 2 textové soubory - soubor všech účastníků s počtem bodů z teoretického testu a soubor, zda zvládli závěrečné jízdy (účastníci s malým počtem bodů zde nejsou). První soubor obsahuje jméno, přijímení, pohlaví, počet bodů a datum narození. Druhý soubor obsahuje jméno, přijímení a boolean, zda zvládli závěrečné zkoušky. 
