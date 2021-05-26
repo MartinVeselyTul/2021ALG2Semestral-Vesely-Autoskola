@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -25,7 +26,7 @@ import java.util.List;
  */
 /**
  *
- * @author marti_000
+ * @author MartinVesely
  */
 public class DrivingSchool {
 
@@ -35,8 +36,7 @@ public class DrivingSchool {
     private List<Driver> passedTests;
     private List<Driver> didntPassedTheory;
     private List<Driver> didntPassedDriving;
-    
-    
+
     public DrivingSchool() {
         drivers = new ArrayList<>();
         passedTests = new ArrayList<>();
@@ -70,26 +70,44 @@ public class DrivingSchool {
                 d = new Driver(firstName, secondName, testPoints, gender, birth, id);
 
                 drivers.add(d);
+                if (d.getTestPoints() < 45) {
+                    didntPassedTheory.add(d);
+                }
+
             }
         }
     }
 
-    public String printAllDrivers(int n) {
-        Collections.sort(drivers);
+    public String printAllDrivers(int n, int compare) {
+        if (compare == 1) {
+            sortPoints sp = new sortPoints();
+            Collections.sort(drivers, sp);
+        }
+        if (compare == 2) {
+            sortPointsUp sp = new sortPointsUp();
+            Collections.sort(drivers, sp);
+        }
+        if (compare == 3) {
+            Collections.sort(drivers);
+        }
+        if (compare == 4) {
+            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
+            Collections.sort(didntPassedTheory, mapComparator);
+        }
         StringBuilder sb = new StringBuilder();
         for (Driver d : drivers) {
-            switch (n){
+            switch (n) {
                 case 1:
                     sb.append(d).append("\n");
                     break;
                 case 2:
-                    if(d.getGender() == 'F'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'F') {
+                        sb.append(d).append("\n");
                     }
                     break;
                 case 3:
-                    if(d.getGender() == 'M'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'M') {
+                        sb.append(d).append("\n");
                     }
                     break;
                 default:
@@ -99,22 +117,38 @@ public class DrivingSchool {
         return sb.toString();
     }
 
-    public String printPassedDrivers(int n) {
-        Collections.sort(passedTests);
+    public String printPassedDrivers(int n, int compare) {
+        if (compare == 1) {
+            sortPoints sp = new sortPoints();
+            Collections.sort(passedTests, sp);
+        }
+        if (compare == 2) {
+            sortPointsUp sp = new sortPointsUp();
+            Collections.sort(passedTests, sp);
+        }
+        if (compare == 3) {
+            Collections.sort(passedTests);
+        }
+        if (compare == 4) {
+            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
+            Collections.sort(didntPassedTheory, mapComparator);
+        }
         StringBuilder sb = new StringBuilder();
         for (Driver d : passedTests) {
-            switch (n){
+            switch (n) {
                 case 1:
                     sb.append(d).append("\n");
                     break;
                 case 2:
-                    if(d.getGender() == 'F'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'F') {
+                        sb.append(d).append("\n");
+                    } else {
+                        break;
                     }
                     break;
                 case 3:
-                    if(d.getGender() == 'M'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'M') {
+                        sb.append(d).append("\n");
                     }
                     break;
                 default:
@@ -125,17 +159,39 @@ public class DrivingSchool {
     }
 
     public String printHeader() {
-        return String.format("%10s %10s %7s %10s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů");
+        return String.format("%10s %10s %7s %10s %15s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů", "Datum narození");
     }
 
-    public void saveResults(String filename) throws IOException {
+    public void saveResults(String filename, int choice) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
-            for (Driver driver : drivers) {
-                pw.println(driver.toString());
+            switch (choice) {
+                case 1:
+                    for (Driver driver : drivers) {
+                        pw.println(driver.toString());
+                    }
+                    break;
+                case 2:
+                    for (Driver driver : passedTests) {
+                        pw.println(driver.toString());
+                    }
+                    break;
+                case 3:
+                    for (Driver driver : didntPassedTheory) {
+                        pw.println(driver.toString());
+                    }
+                    break;
+                case 4:
+                    for (Driver driver : didntPassedDriving) {
+                        pw.println(driver.toString());
+                    }
+                    break;
+                default:
+                    System.out.println("Obraťte se na podporu, prosím.");
             }
+
         }
     }
-    
+
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))) {
             boolean driveTest;
@@ -163,32 +219,44 @@ public class DrivingSchool {
                             didntPassedDriving.add(r);
                         }
                     }
+
                 }
             }
         }
     }
 
-    public String printDidintPassedTheory(int n) {
-        for (Driver d : drivers) {
-            if (d.getTestPoints() < 45) {
-                didntPassedTheory.add(d);
-            }
+    public String printDidintPassedTheory(int n, int compare) {
+        if (compare == 1) {
+            sortPoints sp = new sortPoints();
+            Collections.sort(didntPassedTheory, sp);
         }
-        Collections.sort(didntPassedTheory);
+        if (compare == 2) {
+            sortPointsUp sp = new sortPointsUp();
+            Collections.sort(didntPassedTheory, sp);
+        }
+        if (compare == 3) {
+            Collections.sort(didntPassedTheory);
+        }
+        if (compare == 4) {
+            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
+            Collections.sort(didntPassedTheory, mapComparator);
+        }
         StringBuilder sb = new StringBuilder();
         for (Driver d : didntPassedTheory) {
-            switch (n){
+            switch (n) {
                 case 1:
                     sb.append(d).append("\n");
                     break;
                 case 2:
-                    if(d.getGender() == 'F'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'F') {
+                        sb.append(d).append("\n");   //tady je problém, stejně tak case 3 
+                        break;
                     }
                     break;
                 case 3:
-                    if(d.getGender() == 'M'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'M') {
+                        sb.append(d).append("\n");
+                        break;
                     }
                     break;
                 default:
@@ -198,27 +266,42 @@ public class DrivingSchool {
         return sb.toString();
     }
 
-    public String printDidntPassedDriving(int n) {        
+    public String printDidntPassedDriving(int n, int compare) {
+        if (compare == 1) {
+            sortPoints sp = new sortPoints();
+            Collections.sort(didntPassedDriving, sp);
+        }
+        if (compare == 2) {
+            sortPointsUp sp = new sortPointsUp();
+            Collections.sort(didntPassedDriving, sp);
+        }
+        if (compare == 3) {
+            Collections.sort(didntPassedDriving);
+        }
+        if (compare == 4) {
+            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
+            Collections.sort(didntPassedTheory, mapComparator);
+        }
         StringBuilder sb = new StringBuilder();
         for (Driver d : didntPassedDriving) {
-            switch (n){
+            switch (n) {
                 case 1:
                     sb.append(d).append("\n");
                     break;
                 case 2:
-                    if(d.getGender() == 'F'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'F') {
+                        sb.append(d).append("\n");
                     }
                     break;
                 case 3:
-                    if(d.getGender() == 'M'){
-                        sb.append(d).append("\n");                        
+                    if (d.getGender() == 'M') {
+                        sb.append(d).append("\n");
                     }
                     break;
                 default:
                     return "něco je špatně";
             }
-            
+
         }
         return sb.toString();
     }
