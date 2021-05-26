@@ -29,4 +29,8 @@ zatím chybí
 <h5> test 5 </h5>
   <p> Testován limitní stav, místo int zadán String - výsledek, program se restartoval(je ošetřen) </p>
 <h5> test 6 </h5>
-  <p> Testován limitní stav, neplatný název vstupního souboru -
+  <p> Testován limitní stav, neplatný název vstupního souboru - výsledek dle očekání, program nespadl a žádal o validní vstup </p>
+<h5> test 7 </h5>
+  <p> Testován limitní stav, ukládání souboru s diakritikou - výsledek, soubor se uložil, jde otevřít, název jsou otazníky </p>
+<h5> test 8 </h5>
+  <p> Testován limitní stav, ukládání souboru s neplatnými znaky - soubor se neuložil, program odmítl a chtěl jiný název </p>
