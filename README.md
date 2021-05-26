@@ -18,5 +18,15 @@ Výstupní formáty jsou .txt, .csv a v budoucnu .pdf s použitím externí knih
 zatím chybí
 <h3> Příprava na testování </h3>
 <p> Vytvořené testovací soubory mají 21 řádků i se záhlavím první, druhý cca 10 řádků</p>
-<h5> test 1 <h5>
-<p> 
+<h5> test 1 </h5>
+  <p> Testován běžný vstup, nejlehčí pro chod programu, bez ukládání - výsledek dle očekávání </p>
+<h5> test 2 </h5>
+  <p> Testován běžný vstup s ukládáním do .txt - výsledek dle očekávání </p>
+<h5> test 3 </h5>
+  <p> Testován běžný vstup s ukládáním do .csv - výsledek dle očekávání </p>
+<h5> test 4 </h5>
+  <p> Testován limitní stav, místo int vložení des. čísla - výsledek dle očekávání, program se restartoval (je ošetřen) </p>
+<h5> test 5 </h5>
+  <p> Testován limitní stav, místo int zadán String - výsledek, program se restartoval(je ošetřen) </p>
+<h5> test 6 </h5>
+  <p> Testován limitní stav, neplatný název vstupního souboru -
