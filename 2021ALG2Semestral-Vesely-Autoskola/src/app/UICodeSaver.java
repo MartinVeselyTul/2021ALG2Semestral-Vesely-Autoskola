@@ -15,8 +15,8 @@ import utils.InterfaceUI;
 public class UICodeSaver implements InterfaceUI{
 
     /**
-     *
-     * @return
+     * Metoda vypisující základní menu programu
+     * @return vrací StringBuilder s menu
      */
     @Override
     public String menu() {
@@ -41,8 +41,8 @@ public class UICodeSaver implements InterfaceUI{
     }
 
     /**
-     *
-     * @return
+     * Metoda vypisuje začátek programu
+     * @return vrací StringBuilder s uvítáním uživatele do programu
      */
     @Override
     public String start() {
@@ -67,8 +67,8 @@ public class UICodeSaver implements InterfaceUI{
     }
 
     /**
-     *
-     * @return
+     * Metoda vypisuje další menu pro uživatele
+     * @return vrací StringBuilder s menu
      */
     @Override
     public String filtr() {
@@ -93,6 +93,15 @@ public class UICodeSaver implements InterfaceUI{
         return sb.toString();
     }
     
+    /**
+     * Metoda třídí výstup dle vstupu uživatele. UI uchovává data o aktuálních souborech a předává je této metodě.
+     * V této metodě si uživatel vybírá, jak chce data roztřídit, nebo jak je chce sesortovat
+     * @param n výběr fitrování, sortu
+     * @param ds třída DrivingSchool, kterou tato metoda volá, aby ji vypsala, co vybere uživatel
+     * @param gender výběr filtrování dle pohlaví, neovlivňuje uživatel, uchovává UI
+     * @param tableChoice informace o tabulce, se kterou uživatel pracuje, předává UI
+     * @return vrací výpis z DrivingSchool dle uživatele, je to StringBuilder s tabulkou účastníků
+     */
     @Override
     public String filtering(int n, DrivingSchool ds, int gender, int tableChoice){
         tableChoice = tableChoice - 1;
@@ -159,11 +168,12 @@ public class UICodeSaver implements InterfaceUI{
     }
 
     /**
-     *
-     * @param n
-     * @param ds
-     * @param gender
-     * @param sort
+     * Metoda vypisuje první nesetřízenou tabulku (StringBuilder) s účastníky autoškoly.
+     * Uživatel pouze zadá, zda chce účastníky, co udělali autoškolu, neudělali testy, nebo závěrečné testy
+     * @param n volí uživatel, jakou tabulku chce vytisknout
+     * @param ds DrivingSchool, kterou metoda volá pro výpis
+     * @param gender v této metodě nastaven na 1, tudíž nedělá nic, připraven pro další metody na filtrování dle pohlaví
+     * @param sort nenastaven, jen připraven pro další metody na třídění a sortování
      * @return
      */
     @Override
@@ -191,8 +201,8 @@ public class UICodeSaver implements InterfaceUI{
     }
 
     /**
-     *
-     * @return
+     * Metoda vypisuje string, kde uživatel vidí v jakém formátu může tabulku uložit
+     * @return vrací String s daty pro uživatele
      */
     @Override
     public String savingFormat() {

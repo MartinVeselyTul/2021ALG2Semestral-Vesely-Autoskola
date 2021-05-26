@@ -21,9 +21,9 @@ import java.util.List;
 import utils.AppInterface;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Tato třída slouží pro načítání dat a následnou manipulaci s nimi.
+ * Všechny metody jsou použity v UI k vypisování dat, nejčastěji Stringu s tabulkou účastníků autoškoly.
+ * 
  */
 /**
  *
@@ -46,8 +46,11 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param filename
+     * Tato metoda načítá první soubor, ve kterém jsou čárkou oddělené informace o jednotlivých účastnících autoškoly.
+     * První soubor obsahuje jméno, přijímení, pohlaví, počet bodů z teoretického testu a datum narození. 
+     * Metoda třídí účastníky dle počtu bodů, pokud mají méně než 45, neprošli teoretickými testy
+     * 
+     * @param filename jméno hledaného soubory s daty
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -87,10 +90,16 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param n
-     * @param compare
-     * @return
+     * Tato metoda vypisuje první soubor, nic do něj není přidáno.
+     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
+     * Filtrace je založena na výběru dle pohlaví.
+     * Metoda sortuje účastníky dle výběru uživatele.
+     * Sortování je provedeno přes Comparable i Comparator.
+     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
+     * 
+     * @param n parametr pro filtrování dle pohlaví
+     * @param compare parametr pro sortování dle uživatele
+     * @return vrací StringBuilder s tabulkou účastníků autoškoly
      */
     @Override
     public String printAllDrivers(int n, int compare) {
@@ -133,10 +142,17 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param n
-     * @param compare
-     * @return
+     * Metoda, co vypisuje účastníky autoškoly, kteří splnili teoretické testy tj. mají více než 45 bodů a splnili závěrečné jízdy -> mají autoškolu
+     * 
+     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
+     * Filtrace je založena na výběru dle pohlaví.
+     * Metoda sortuje účastníky dle výběru uživatele.
+     * Sortování je provedeno přes Comparable i Comparator.
+     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
+     * 
+     * @param n parametr pro filtrování dle pohlaví
+     * @param compare parametr pro sortování dle uživatele
+     * @return vrací StringBuilder s tabulkou účastníků autoškoly
      */
     @Override
     public String printPassedDrivers(int n, int compare) {
@@ -181,14 +197,21 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @return
+     * Teto metoda vypisuje nadpis tabulky Jméno, Přijímení, Pohlaví, Počet bodů a Datum narození
+     * @return metoda vrací String se záhlavím tabulky
      */
     @Override
     public String printHeader() {
         return String.format("%10s %10s %7s %10s %15s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů", "Datum narození");
     }
 
+    /**
+     * Metoda slouží k ukládání dat do souboru txt nebo csv
+     * Třídí dle vstupních dat, jaký List má uložit
+     * 
+     * @param filename parametr jméno souboru, volí uživatel
+     * @param choice parametr, který předává UI, aby metoda věděla, jakou tabulku uložit
+     */
     @Override
     public void saveResults(String filename, int choice) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
@@ -221,8 +244,10 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param filename
+     * Metoda načítá druhý soubor s daty, který obsahuje jméno, přijímení a boolean, zda účastníci uspěli v závěrečných zkouškách
+     * Metoda třídí účastníky do Listů dle výsledků ze závěrečných zkoušek (boolean)
+     * 
+     * @param filename jméno vstupního souboru
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -261,10 +286,16 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param n
-     * @param compare
-     * @return
+     * Tato metoda vypisuje účastníky, kteří nenapsali teoretické testy tj. měli méně než 45 bodů
+     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
+     * Filtrace je založena na výběru dle pohlaví.
+     * Metoda sortuje účastníky dle výběru uživatele.
+     * Sortování je provedeno přes Comparable i Comparator.
+     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
+     * 
+     * @param n parametr pro filtrování dle pohlaví
+     * @param compare parametr pro sortování dle uživatele
+     * @return vrací StringBuilder s tabulkou účastníků autoškoly
      */
     @Override
     public String printDidintPassedTheory(int n, int compare) {
@@ -309,10 +340,16 @@ public class DrivingSchool implements AppInterface{
     }
 
     /**
-     *
-     * @param n
-     * @param compare
-     * @return
+     * Tato metoda vypisuje účastníky, kteří mají více než 45 bodů, ale neuspěli v závěrečných zkouškách
+     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
+     * Filtrace je založena na výběru dle pohlaví.
+     * Metoda sortuje účastníky dle výběru uživatele.
+     * Sortování je provedeno přes Comparable i Comparator.
+     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
+     * 
+     * @param n parametr pro filtrování dle pohlaví
+     * @param compare parametr pro sortování dle uživatele
+     * @return vrací StringBuilder s tabulkou účastníků autoškoly
      */
     @Override
     public String printDidntPassedDriving(int n, int compare) {
@@ -354,6 +391,15 @@ public class DrivingSchool implements AppInterface{
         }
         return sb.toString();
     }
+    
+      /**
+     * Metoda slouží k ukládání dat do souboru pdf
+     * momentálně nefunkční kvůli ArrayListu z knihovny java.util, která není kompatibilní s knihovnou iText
+     * bude se muset využít jiná knihovna
+     * 
+     * @param filename parametr jméno souboru, volí uživatel
+     * @param choice parametr, který předává UI, aby metoda věděla, jakou tabulku uložit
+     */
 //    public void savePDF(String filename) throws FileNotFoundException {
 //        PdfWriter writer = new PdfWriter(filename);
 //        PdfDocument pdf = new PdfDocument(writer);
