@@ -4,7 +4,7 @@ Program autoškola bude zpracovávat výsledky autoškoly po teoretických teste
 Program umožňuje uživateli zobrazit, jací žáci udělali písemné testy, jací udělali kompletní autoškoly, jací neudělali závěrečné testy, nebo jací nesplnili ani jedno. Následně program umožní filtrování dle pohlaví, nebo setřídění dle počtu bodů, nebo třídění dle křestního jména. Následně se program ptá uživatele, zda chce vybraný soubor uložit, případně do jakého formátu (formát pdf přes externí knihovnu zatím nefunguje kvůli java.util.List, které není kompatibilní s druhou knihovnou). Po uložení může uživatel spustit program znovu.
 <h3> Návrh řešení </h3>
 <h4> Funkční specifikace </h4>
-Menu -> výběr jaké účastníky chce uživatel zobrazit
+<p>Menu -> výběr jaké účastníky chce uživatel zobrazit</p>
 <p>1. seznam všech účastníků </p>
 <p>2. seznam účastníků, kteří udělali autoškolu</p>
 <p>3. seznam účastníků, kteří neudělali teoretické testy</p>
