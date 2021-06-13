@@ -1,7 +1,0 @@
-   Daniela    Cervena    F        50        2021-05-11
-      Jana   Souckova    F        47        2021-04-19
-     Jonas     Bohata    M        47        2021-03-13
-  Karolina       Mala    F        50        2021-03-29
-     Lukas     Loucka    M        49        2021-05-01
-     Marie Krupickova    F        45        2021-03-20
-    Martin     Kysely    M        45        2021-04-28

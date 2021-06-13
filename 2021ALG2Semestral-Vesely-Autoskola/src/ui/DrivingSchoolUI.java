@@ -1,13 +1,28 @@
 package ui;
 
+import app.Driver;
 import app.DrivingSchool;
 import app.UICodeSaver;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-/*
+/* Upravy
+ * Zápis do bin souboru
+
+ * Zpracovat časy, aby program něco počítal
+
+ * Přidat vstupy (testy) od uživatele, co se budou zapisovat do souborů
+ * Přidat regulární výraz
+
+ * Napsat David Bálik ohledně pdf ukládání -- ukladani hazi chybu, nasel jsem, ze chce upravit pom.xml, ale nevim jak a co tam udelat, ani nevim proc to presne nefunguje
+
+ * Udělat nový diagram dle videa
+ * 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -72,7 +87,9 @@ public class DrivingSchoolUI {
                         System.out.println("Zadané číslo musí být 1, 2, 3, 4");
                         tableChoice = sc.nextInt();
                     }
-
+                    List<Driver> list = new ArrayList<>();
+                    ds.changeList(tableChoice, list);
+                    
                     System.out.println(cs.usersChoice(tableChoice, ds, gender, sort));
                     System.out.println("");
                     System.out.println(cs.filtr());
@@ -84,16 +101,6 @@ public class DrivingSchoolUI {
 
                     System.out.println(cs.filtering(filter, ds, gender, tableChoice));
 
-                    //dodělat filtrování přes int u každého výpisu ds.printblabla - hotovo
-                    //na ukládání použít regulární výraz
-                    //mrknout na video ohledně rozhraní
-                    //přidat data narození, smazat data zkoušek - hotovo
-                    //přidat možnosti ukládání - krom pdf 
-                    //optimalizace 
-//                                                      String DEST = "results/pdfko.pdf";
-//                                                      File file = new File(DEST);
-//                                                      file.getParentFile().mkdirs();
-//                                                      ds.savePDF(DEST);
                     System.out.println("Ukládání souborů.");
                     System.out.println("Pokud chcete soubor uložit, stiskněte 1, pokud ne, stiskněte 0");
                     saveOrNot = sc.nextInt();
@@ -106,8 +113,8 @@ public class DrivingSchoolUI {
 
                         System.out.println("V jakém formátu chcete soubor uložit?");
                         fileSave = sc.nextInt();
-                        while (fileSave < 1 || fileSave > 3) {
-                            System.out.println("Zadejte číslo od 1 do 3");
+                        while (fileSave < 1 || fileSave > 4) {
+                            System.out.println("Zadejte číslo od 1 do 4");
                             fileSave = sc.nextInt();
                         }
                         while (true) {
@@ -124,6 +131,8 @@ public class DrivingSchoolUI {
                                         System.out.println("Na ukládání do pdf se pracuje...");
                                         System.out.println("Máme problém s knihovnou java.util.list, kterou má iText vlastní a nejsou bohužel kombinovatelné :(");
                                         break;
+                                    case 4:
+                                        ds.saveResultsToBinary(new File(sc.next() + ".dat"), list);
                                 }
 
                                 break;
@@ -133,18 +142,14 @@ public class DrivingSchoolUI {
                         }
                     }
                     System.out.println("Zadejte 1 pro opakování programu, 0 pro konec");
-                    repeat = 9876;
+                    repeat = sc.nextInt();
                     index++;
                     while (repeat < 0 || repeat > 1) {
-                        if (repeat == 9876) {
-                            repeat = sc.nextInt();
-                        } else {
                             System.out.println("Zadané číslo musí být 1 pro opakování, nebo 0 pro konec");
-                            repeat = sc.nextInt();
-                        }
+                            repeat = sc.nextInt();                        
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Pouze celá čísla prosíme");
+                    System.out.println("Pouze celá čísla prosíme" + e.getMessage());
                     System.out.println("Program se automaticky restartoval");
                     System.out.println("");
                     sc.nextLine();

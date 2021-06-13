@@ -27,7 +27,6 @@ public class Driver implements Comparable<Driver>{
     private int id;
     
     //hodnoty pro settre
-    private LocalDate driveDate;
 
     public Driver(String firstName, String secondName, int testPoints, char gender, LocalDate testDate, int id) {
         this.firstName = firstName;
@@ -61,10 +60,6 @@ public class Driver implements Comparable<Driver>{
     public int getId() {
         return id;
     }        
-
-    public void setDriveDate(LocalDate driveDate) {
-        this.driveDate = driveDate;
-    }     
 
     @Override
     public String toString() {        

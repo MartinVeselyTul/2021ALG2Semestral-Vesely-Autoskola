@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  *
- * @author marti_000
+ * @author MartinVesely
  */
 public interface AppInterface {
     public void loadResults(String filename) throws FileNotFoundException, IOException;

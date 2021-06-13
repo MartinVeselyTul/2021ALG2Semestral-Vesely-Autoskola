@@ -9,7 +9,7 @@ import app.DrivingSchool;
 
 /**
  *
- * @author marti_000
+ * @author MartinVesely
  */
 public interface InterfaceUI {
     public String menu();

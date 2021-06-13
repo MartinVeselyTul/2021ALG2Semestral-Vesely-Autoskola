@@ -6,8 +6,10 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -211,6 +213,7 @@ public class DrivingSchool implements AppInterface{
      * 
      * @param filename parametr jméno souboru, volí uživatel
      * @param choice parametr, který předává UI, aby metoda věděla, jakou tabulku uložit
+     * @throws java.io.IOException
      */
     @Override
     public void saveResults(String filename, int choice) throws IOException {
@@ -268,8 +271,7 @@ public class DrivingSchool implements AppInterface{
                 driveDate = LocalDate.parse(parts[2], dtf);
                 if (driveTest == true) {
                     for (Driver r : drivers) {
-                        if (r.getId() == id) {
-                            r.setDriveDate(driveDate);
+                        if (r.getId() == id) {                            
                             passedTests.add(r);
                         }
                     }
@@ -391,28 +393,71 @@ public class DrivingSchool implements AppInterface{
         }
         return sb.toString();
     }
-    
+    public void changeList(int n, List<Driver> list){
+        switch(n){
+            case 1:
+                list = drivers;
+                break;
+            case 2:
+                list = passedTests;
+                break;
+            case 3:
+                list = didntPassedTheory;
+                break;
+            case 4:
+                list = didntPassedDriving;
+                break;
+            default:
+                System.out.println("Obraťte se na podporu");
+                break;
+        }
+    }
+    public void saveResultsToBinary(File resultFile, List<Driver> list) throws FileNotFoundException, IOException{
+        try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(resultFile))){
+            for (Driver driver : list) {
+                dos.writeInt(driver.getTestPoints());
+                dos.writeUTF(driver.getFirstName());
+                int nChars = driver.getSecondName().length();
+                dos.writeInt(nChars);
+                for (int i = 0; i < nChars; i++) {
+                    dos.writeChar(driver.getSecondName().charAt(i));   
+                }              
+            }
+        }
+    }
       /**
      * Metoda slouží k ukládání dat do souboru pdf
      * momentálně nefunkční kvůli ArrayListu z knihovny java.util, která není kompatibilní s knihovnou iText
      * bude se muset využít jiná knihovna
      * 
      * @param filename parametr jméno souboru, volí uživatel
-     * @param choice parametr, který předává UI, aby metoda věděla, jakou tabulku uložit
+     * @throws java.io.FileNotFoundException
      */
-//    public void savePDF(String filename) throws FileNotFoundException {
+//    public void savePDF(String filename) throws IOException {
 //        PdfWriter writer = new PdfWriter(filename);
 //        PdfDocument pdf = new PdfDocument(writer);
-//        Document document = new Document(pdf);
-//        document.add(new Paragraph("Hello World!"));
-//        document.close();
-////            StringBuilder sb = new StringBuilder();
-////            for (Driver d : didntPassedTheory) {
-////                sb.append(d).append("\n");
-////            }
-////            Paragraph kokot = new Paragraph(sb.toString());
-////            document.add(kokot);
-//        
-//        System.out.println("List added");
+//        try (Document document = new Document(pdf)) {
+//            document.add(new Paragraph("Hello World!"));
+//            StringBuilder sb = new StringBuilder();
+//            for (Driver d : didntPassedTheory) {
+//                sb.append(d).append("\n");
+//            }
+//            Paragraph kokot = new Paragraph(sb.toString());
+//            document.add(kokot);
+      //  }
+    //}
+//    public static void main(String[] args) throws IOException {
+//        DrivingSchool ds = new DrivingSchool();        
+//        String nevimco = "results/prvni.pdf";
+//        File file = new File(nevimco);
+//        file.getParentFile().mkdirs();
+//        try{
+//            ds.savePDF(nevimco);
+//        }catch(FileNotFoundException e){
+//            System.out.println("Nastala chyba"+ e.getMessage());
+//        }
+//        System.out.println("Ahoj");
 //    }
+    
 }
+ 
