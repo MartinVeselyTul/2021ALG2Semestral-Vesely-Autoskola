@@ -5,6 +5,8 @@
  */
 package utils;
 
+import com.itextpdf.text.DocumentException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -21,5 +23,6 @@ public interface AppInterface {
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException;
     public String printDidintPassedTheory(int n, int compare);
     public String printDidntPassedDriving(int n, int compare);
-    
+    public void saveResultsToBinary(File resultFile, int n) throws FileNotFoundException, IOException;
+    public void savePDF(String filename, int n)throws IOException, DocumentException ;
 }

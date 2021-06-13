@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Scanner;
 
 /* Upravy
- * Zápis do bin souboru - skoro hotove, nevim, zda se to uklada
+ * Zápis do bin souboru - program ukládá, vypisuje, ale nevím, zda správně v binárním souboru (pozn. blok otevře text)
 
- * Zpracovat časy, aby program něco počítal
+ * Zpracovat časy, aby program něco počítal - datum dokončení autoškoly (nejlepší možnost, zatím nevím, jak zapracovat)
 
- * BONUS zkusit přidat funkci, aby šel vložit další jezdec
+ * BONUS zkusit přidat funkci, aby šel vložit další jezdec, musel by se předělat celý program - zkoušel jsem přidat jezdce (šlo), ale uložit soubor a znovu z něj načítat ne StringBuilder atd...
 
  * Přidat regulární výraz - u ukládání souborů
 
- * Napsat David Bálik ohledně pdf ukládání -- po pridani jine iText knihovny ukladani funguje, alespoň na první testovací text, huraa
+ * Napsat David Bálik ohledně pdf ukládání -- funguje, ale male chyby stale jsou
 
  * !!!Udělat nový diagram dle videa!!!
  * 
@@ -46,7 +46,7 @@ public class DrivingSchoolUI {
         int saveOrNot;
         int filter;
         int sort;
-        int fileSave;
+        int fileSave;        
 
         while (repeat == 1) {
             System.out.println(index + ". cyklus programu");
@@ -77,12 +77,12 @@ public class DrivingSchoolUI {
                 }
                 gender = 1;
                 sort = 0;
-                System.out.println(cs.menu());
 
                 System.out.println("");
-
+                
                 //ds.saveResults("vysledky.txt");
                 try {
+                    System.out.println(cs.menu());
                     int tableChoice = sc.nextInt();
 
                     while (tableChoice < 1 || tableChoice > 4) {
@@ -90,7 +90,6 @@ public class DrivingSchoolUI {
                         tableChoice = sc.nextInt();
                     }
                     List<Driver> list = new ArrayList<>();
-                    ds.changeList(tableChoice, list);
                     
                     System.out.println(cs.usersChoice(tableChoice, ds, gender, sort));
                     System.out.println("");
@@ -137,7 +136,7 @@ public class DrivingSchoolUI {
                                         }
                                         break;
                                     case 4:
-                                        ds.saveResultsToBinary(new File(sc.next() + ".dat"), list);
+                                        ds.saveResultsToBinary(new File(sc.next() + ".dat"), tableChoice);
                                 }
 
                                 break;

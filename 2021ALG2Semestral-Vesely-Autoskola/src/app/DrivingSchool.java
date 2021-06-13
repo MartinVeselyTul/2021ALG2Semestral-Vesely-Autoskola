@@ -2,10 +2,7 @@ package app;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -396,7 +393,18 @@ public class DrivingSchool implements AppInterface{
         }
         return sb.toString();
     }
-    public void changeList(int n, List<Driver> list){
+    
+    /**
+     * Metoda slouží pro uložení dat do binárního souboru
+     * 
+     * @param resultFile jméno souboru, volí uživatel
+     * @param n nevolí uživatel, jen pro program, aby věděl, jaký ArrayList má uložit
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @Override
+    public void saveResultsToBinary(File resultFile, int n) throws FileNotFoundException, IOException{
+        List<Driver> list = new ArrayList<>();
         switch(n){
             case 1:
                 list = drivers;
@@ -414,8 +422,6 @@ public class DrivingSchool implements AppInterface{
                 System.out.println("Obraťte se na podporu");
                 break;
         }
-    }
-    public void saveResultsToBinary(File resultFile, List<Driver> list) throws FileNotFoundException, IOException{
         try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(resultFile))){
             for (Driver driver : list) {
                 dos.writeInt(driver.getTestPoints());
@@ -430,15 +436,15 @@ public class DrivingSchool implements AppInterface{
     }
       /**
      * Metoda slouží k ukládání dat do souboru pdf
-     * momentálně nefunkční kvůli ArrayListu z knihovny java.util, která není kompatibilní s knihovnou iText
-     * bude se muset využít jiná knihovna
+     * Využita externí knihovna iText
      * 
      * @param filename parametr jméno souboru, volí uživatel
-     * @param n
+     * @param n nevolí uživatel, jen pro program, aby věděl, jaký ArrayList má uložit
      * @throws java.io.FileNotFoundException
      * @throws com.itextpdf.text.DocumentException
      */
-    public void savePDF(String filename, int n) throws IOException, DocumentException {
+    @Override
+    public void savePDF(String filename, int n) throws FileNotFoundException, DocumentException{
         Document document = new Document();
         PdfWriter.getInstance(document,new FileOutputStream(filename+".pdf"));
         
@@ -490,6 +496,6 @@ public class DrivingSchool implements AppInterface{
 //        }
         System.out.println("Ahoj");
     }
-    
+       
 }
  
