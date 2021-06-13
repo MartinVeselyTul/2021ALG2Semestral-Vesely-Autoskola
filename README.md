@@ -35,4 +35,4 @@ zatím chybí
 <h5> test 8 </h5>
   <p> Testován limitní stav, ukládání souboru s neplatnými znaky - soubor se neuložil, program odmítl a chtěl jiný název </p>
 <h3> Popis fungování externí knihovny </h3>
-Externí knihovna iText by měla umožnit ukládání do formátu pdf, což se mi nepodařilo zprovoznit. Ačkoliv jsem hledal materiály a tutoriály po internetu, nenašel jsem způsob, jakým vložit ArrayList vytvořený ve třídě DrivingSchool, do dokumentu z této knihovny. Knihovna využívá vlastní metodu .List, která se odmítá s knihovnou java.util.List tudíž mi nejde do dokumentu vložit. Pokud bych si vytvořil List až v průběhu tvoření ukládáného souboru, pdf se mi uložilo.
+Externí knihovna iText mi umožnila ukládat výsledná data do formátu PDF, dlouho jsem řešil, že mi verze iText nefungovala (ani na "helloworld"). Kontaktoval jsem kolegu, který mi poslal jinou verzi iText a v té už ukládat data šla. 
