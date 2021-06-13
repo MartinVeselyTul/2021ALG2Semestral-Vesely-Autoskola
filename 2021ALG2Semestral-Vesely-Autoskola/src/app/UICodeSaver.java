@@ -206,16 +206,17 @@ public class UICodeSaver implements InterfaceUI{
      */
     @Override
     public String savingFormat() {
-        String[] par = new String[5];
+        String[] par = new String[6];
         par[0] = "Vyberte, v jaké formátu chcete soubor uložit.";
         par[1] = " ";
         par[2] = "1 .txt";
         par[3] = "2 .csv";
         par[4] = "3 .pdf";
+        par[5] = "4 .dat(binarni soubor)";
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <= 4; i++) {
-            if (i == 4) {
+        for (int i = 0; i <= 5; i++) {
+            if (i == 5) {
                 sb.append(par[i]);
             } else {
                 sb.append(par[i]).append("\n");

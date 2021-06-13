@@ -3,6 +3,7 @@ package ui;
 import app.Driver;
 import app.DrivingSchool;
 import app.UICodeSaver;
+import com.itextpdf.text.DocumentException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,16 +13,17 @@ import java.util.List;
 import java.util.Scanner;
 
 /* Upravy
- * Zápis do bin souboru
+ * Zápis do bin souboru - skoro hotove, nevim, zda se to uklada
 
  * Zpracovat časy, aby program něco počítal
 
- * Přidat vstupy (testy) od uživatele, co se budou zapisovat do souborů
- * Přidat regulární výraz
+ * BONUS zkusit přidat funkci, aby šel vložit další jezdec
 
- * Napsat David Bálik ohledně pdf ukládání -- ukladani hazi chybu, nasel jsem, ze chce upravit pom.xml, ale nevim jak a co tam udelat, ani nevim proc to presne nefunguje
+ * Přidat regulární výraz - u ukládání souborů
 
- * Udělat nový diagram dle videa
+ * Napsat David Bálik ohledně pdf ukládání -- po pridani jine iText knihovny ukladani funguje, alespoň na první testovací text, huraa
+
+ * !!!Udělat nový diagram dle videa!!!
  * 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -128,8 +130,11 @@ public class DrivingSchoolUI {
                                         ds.saveResults(sc.next() + ".csv", tableChoice);
                                         break;
                                     case 3:
-                                        System.out.println("Na ukládání do pdf se pracuje...");
-                                        System.out.println("Máme problém s knihovnou java.util.list, kterou má iText vlastní a nejsou bohužel kombinovatelné :(");
+                                        try{
+                                        ds.savePDF(sc.next(), tableChoice);
+                                        }catch(DocumentException e){
+                                            System.out.println("Nastala chyba při vytváření PDF dokumentu" +  e.getMessage());
+                                        }
                                         break;
                                     case 4:
                                         ds.saveResultsToBinary(new File(sc.next() + ".dat"), list);

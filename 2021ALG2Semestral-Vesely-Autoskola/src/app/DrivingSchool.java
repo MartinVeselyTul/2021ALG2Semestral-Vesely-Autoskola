@@ -1,9 +1,12 @@
 package app;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -431,33 +434,62 @@ public class DrivingSchool implements AppInterface{
      * bude se muset využít jiná knihovna
      * 
      * @param filename parametr jméno souboru, volí uživatel
+     * @param n
      * @throws java.io.FileNotFoundException
+     * @throws com.itextpdf.text.DocumentException
      */
-//    public void savePDF(String filename) throws IOException {
-//        PdfWriter writer = new PdfWriter(filename);
-//        PdfDocument pdf = new PdfDocument(writer);
-//        try (Document document = new Document(pdf)) {
-//            document.add(new Paragraph("Hello World!"));
-//            StringBuilder sb = new StringBuilder();
-//            for (Driver d : didntPassedTheory) {
-//                sb.append(d).append("\n");
-//            }
-//            Paragraph kokot = new Paragraph(sb.toString());
-//            document.add(kokot);
-      //  }
-    //}
-//    public static void main(String[] args) throws IOException {
-//        DrivingSchool ds = new DrivingSchool();        
-//        String nevimco = "results/prvni.pdf";
-//        File file = new File(nevimco);
-//        file.getParentFile().mkdirs();
+    public void savePDF(String filename, int n) throws IOException, DocumentException {
+        Document document = new Document();
+        PdfWriter.getInstance(document,new FileOutputStream(filename+".pdf"));
+        
+        com.itextpdf.text.List a = new com.itextpdf.text.List();
+        switch(n){
+            case 1:
+                for (Driver driver : drivers) {
+                a.add(driver.toString());  
+                }
+                break;
+            case 2:
+                for (Driver driver : passedTests) {
+                a.add(driver.toString());  
+                }
+                break;
+            case 3:
+                for (Driver driver : didntPassedTheory) {
+                a.add(driver.toString());  
+                }
+                break;
+            case 4:
+                for (Driver driver : didntPassedDriving) {
+                a.add(driver.toString());  
+                }
+                break;
+            default:
+                System.out.println("Obraťte se na podporu");
+                break;
+        }
+        
+
+        document.open();
+        document.add(new Paragraph("Seznam požadovaných jezdcu"));
+        document.add(a);
+        document.close();
+        
+            
+        }
+    
+        public static void main(String[] args) throws IOException, DocumentException {
+        DrivingSchool ds = new DrivingSchool();        
+        String nevimco = "results/dalsi";
+        File file = new File(nevimco);
+        file.getParentFile().mkdirs();
 //        try{
 //            ds.savePDF(nevimco);
 //        }catch(FileNotFoundException e){
 //            System.out.println("Nastala chyba"+ e.getMessage());
 //        }
-//        System.out.println("Ahoj");
-//    }
+        System.out.println("Ahoj");
+    }
     
 }
  
