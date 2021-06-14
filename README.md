@@ -38,3 +38,4 @@ Výstupní formáty jsou .txt, .csv a v budoucnu .pdf s použitím externí knih
   <p> Testován limitní stav, ukládání souboru s neplatnými znaky - soubor se neuložil, program odmítl a chtěl jiný název </p>
 <h3> Popis fungování externí knihovny </h3>
 Externí knihovna iText mi umožnila ukládat výsledná data do formátu PDF, dlouho jsem řešil, že mi verze iText nefungovala (ani na "helloworld"). Kontaktoval jsem kolegu, který mi poslal jinou verzi iText a v té už ukládat data šla. 
+Přes knihovnu iText vytvořím při ukládání dokument, zapíši název a cestu, kam se má uložit. Dále do něj přidávám textové pole/text. S přidáním Listu typu ArrayList byl největší problém, jelikož iText má vlastní List, který není kompatibilní s java.util.List, tudíž jsem musel hledat rad na internetu a tento problém obejít. Po přidání textu do dokumentu dokument zavřeme a on se uloží. 
