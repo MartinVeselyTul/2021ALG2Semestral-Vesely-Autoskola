@@ -15,6 +15,7 @@ Filtrovací menu -> jak chce uživatel setřídit/filtrovat zvolený seznam
 Vstup obsahuje typy String, int, LocalDate a boolean, jsou odděleny čárkou, testované soubory byly formátu .csv
 Výstupní formáty jsou .txt, .csv a v budoucnu .pdf s použitím externí knihovny iText
 <h4> Class diagram </h4>
+
 ![diagram](https://raw.githubusercontent.com/MartinVeselyTul/2021ALG2Semestral-Vesely-Autoskola/main/diagram2.png)
 
 <h3> Příprava na testování </h3>
