@@ -11,19 +11,13 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import utils.AppInterface;
 
 /* Upravy
- * Zápis do bin souboru - program ukládá, vypisuje, ale nevím, zda správně v binárním souboru (pozn. blok otevře text)
-
- * Zpracovat časy, aby program něco počítal - datum dokončení autoškoly (nejlepší možnost, zatím nevím, jak zapracovat)
-
- * BONUS zkusit přidat funkci, aby šel vložit další jezdec, musel by se předělat celý program - zkoušel jsem přidat jezdce (šlo), ale uložit soubor a znovu z něj načítat ne StringBuilder atd...
-
- * Přidat regulární výraz - u ukládání souborů
-
- * Napsat David Bálik ohledně pdf ukládání -- funguje, ale male chyby stale jsou
-
- * !!!Udělat nový diagram dle videa!!!
+ * 1. vše v UICodeSaver přepsat na sout + zkrátit kód v mainu
+ * 2. všechny stejné části kódu smazat a napsat jen jednou, dát do metod (DRY)
+ * 3. místo výpisu Driver vypsat data, které bude program počítat
+ * 4. optimalizovat
  * 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -36,131 +30,106 @@ import java.util.Scanner;
 public class DrivingSchoolUI {
 
     static Scanner sc = new Scanner(System.in);
+    static DrivingSchool ds = new DrivingSchool();
 
     public static void main(String[] args) {
-
-        UICodeSaver cs = new UICodeSaver();
-        int gender;
-        int repeat = 1;
-        int index = 1;
-        int saveOrNot;
-        int filter;
-        int sort;
-        int fileSave;        
-
-        while (repeat == 1) {
-            System.out.println(index + ". cyklus programu");
+        try {
+            nactiSoubory(ds);
+            System.out.println(UICodeSaver.start());
             System.out.println("");
-            System.out.println(cs.start());
-            System.out.println("");
-            DrivingSchool ds = new DrivingSchool();
+            System.out.println(UICodeSaver.menu());
+
             try {
-                while (true) {
-                    try {
-                        System.out.println("Zadejte název souboru s teoretickými testy");
-                        //ds.loadResults("data/" + sc.next());
-                        ds.loadResults("data/autoskola_testy.csv");
-                        break;
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Zadaný soubor neexistuje.");
-                    }
-                }
-                while (true) {
-                    try {
-                        System.out.println("Zadejte název souboru s praktickými testy");
-                        //ds.loadDrivingTests("data/" + sc.next());
-                        ds.loadDrivingTests("data/driveTest.csv");
-                        break;
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Zadaný soubor neexistuje.");
-                    }
-                }
-                gender = 1;
-                sort = 0;
-
-                System.out.println("");
+                userChoiceMain();
                 
-                //ds.saveResults("vysledky.txt");
-                try {
-                    System.out.println(cs.menu());
-                    int tableChoice = sc.nextInt();
-
-                    while (tableChoice < 1 || tableChoice > 4) {
-                        System.out.println("Zadané číslo musí být 1, 2, 3, 4");
-                        tableChoice = sc.nextInt();
-                    }
-                    List<Driver> list = new ArrayList<>();
-                    
-                    System.out.println(cs.usersChoice(tableChoice, ds, gender, sort));
-                    System.out.println("");
-                    System.out.println(cs.filtr());
-                    filter = sc.nextInt();
-                    while (filter < 1 || filter > 7) {
-                        System.out.println("Zadejte číslo od 1 do 7");
-                        filter = sc.nextInt();
-                    }
-
-                    System.out.println(cs.filtering(filter, ds, gender, tableChoice));
-
-                    System.out.println("Ukládání souborů.");
-                    System.out.println("Pokud chcete soubor uložit, stiskněte 1, pokud ne, stiskněte 0");
-                    saveOrNot = sc.nextInt();
-                    while (saveOrNot < 0 || saveOrNot > 1) {
-                        System.out.println("Stiskněte buď 1, nebo 0");
-                        saveOrNot = sc.nextInt();
-                    }
-                    if (saveOrNot == 1) {
-                        System.out.println(cs.savingFormat());
-
-                        System.out.println("V jakém formátu chcete soubor uložit?");
-                        fileSave = sc.nextInt();
-                        while (fileSave < 1 || fileSave > 4) {
-                            System.out.println("Zadejte číslo od 1 do 4");
-                            fileSave = sc.nextInt();
-                        }
-                        while (true) {
-                            try {
-                                System.out.println("Zadejte název souboru");
-                                switch (fileSave) {
-                                    case 1:
-                                        ds.saveResults(sc.next() + ".txt", tableChoice);
-                                        break;
-                                    case 2:
-                                        ds.saveResults(sc.next() + ".csv", tableChoice);
-                                        break;
-                                    case 3:
-                                        try{
-                                        ds.savePDF(sc.next(), tableChoice);
-                                        }catch(DocumentException e){
-                                            System.out.println("Nastala chyba při vytváření PDF dokumentu" +  e.getMessage());
-                                        }
-                                        break;
-                                    case 4:
-                                        ds.saveResultsToBinary(new File(sc.next() + ".dat"), tableChoice);
-                                }
-
-                                break;
-                            } catch (FileNotFoundException e) {
-                                System.out.println("Zadaný soubor neexistuje.");
-                            }
-                        }
-                    }
-                    System.out.println("Zadejte 1 pro opakování programu, 0 pro konec");
-                    repeat = sc.nextInt();
-                    index++;
-                    while (repeat < 0 || repeat > 1) {
-                            System.out.println("Zadané číslo musí být 1 pro opakování, nebo 0 pro konec");
-                            repeat = sc.nextInt();                        
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Pouze celá čísla prosíme" + e.getMessage());
-                    System.out.println("Program se automaticky restartoval");
-                    System.out.println("");
-                    sc.nextLine();
-                }
-            } catch (IOException e) {
-                System.out.println("Nastal problém" + e.getMessage());
+                //možnost výpisu seznamů funguje
+                //dodělat výpisy dat a počtu u 2. možnosti
+                
+            } catch (InputMismatchException e) {
+                System.out.println("Pouze celá čísla prosíme" + e.getMessage());
+                System.out.println("Program se automaticky restartoval");
+                System.out.println("");
+                sc.nextLine();
             }
+        } catch (IOException e) {
+            System.out.println("Nastal problém" + e.getMessage());
+        }
+    }
+
+    public static void nactiSoubory(DrivingSchool ds) throws IOException {
+        try {
+            ds.loadResults("data/autoskola_testy.csv");
+            ds.loadDrivingTests("data/driveTest.csv");
+        } catch (FileNotFoundException e) {
+            System.out.println("Zadaný soubor neexistuje.");
+        }
+    }
+
+    public static void userChoiceSort(int n) {
+        switch (n) {
+            case 1:
+                ds.sortByPoints();
+                break;
+            case 2:
+                ds.sortByPointsUp();
+                break;
+            case 3:
+                ds.sortByName();
+                break;
+            case 4:
+                ds.sortByBirth();
+                break;
+            default:
+                System.out.println("Nastala chyba");
+                break;
+        }
+    }
+
+    public static void userChoose1() {
+        System.out.println(UICodeSaver.usersChoiceGroupOfDrivers());
+        int choiceGroup = sc.nextInt();
+        System.out.println(UICodeSaver.usersChoiceComparableCompatator());
+        int choiceSort = sc.nextInt();
+        switch (choiceGroup) {
+            case 1:
+                userChoiceSort(choiceSort);
+                
+                System.out.println(ds.printPassedDrivers());
+                break;
+            case 2:
+                userChoiceSort(choiceSort);
+                System.out.println(ds.printDidntPassedDriving());
+                break;
+            case 3:
+                userChoiceSort(choiceSort);
+                System.out.println(ds.printDidntPassedTheory());
+                break;
+            case 4:
+                userChoiceSort(choiceSort);                
+                System.out.println(ds.printDrivers());
+                break;
+        }
+    }
+
+    public static void userChoose2() {
+        System.out.println(UICodeSaver.usersChoiceDataWork());
+        int userWorkchoice = sc.nextInt();
+        System.out.println(ds.getStatisticPassedDrivers());
+    }
+
+    public static void userChoiceMain() {
+        System.out.println(UICodeSaver.volbaNeboFiltrPraceSDaty());
+        int n = sc.nextInt();
+        switch (n) {
+            case 1:
+                userChoose1();
+                break;
+            case 2:
+                userChoose2();
+                break;
+            default:
+                System.out.println("Nastala chyba");
+                break;
         }
     }
 }

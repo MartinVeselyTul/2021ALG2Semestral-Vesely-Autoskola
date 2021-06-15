@@ -31,27 +31,23 @@ import utils.AppInterface;
  *
  * @author MartinVesely
  */
-public class DrivingSchool implements AppInterface{
+public class DrivingSchool implements AppInterface {
 
     static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private List<Driver> drivers;
-    private List<Driver> passedTests;
-    private List<Driver> didntPassedTheory;
-    private List<Driver> didntPassedDriving;
 
     public DrivingSchool() {
         drivers = new ArrayList<>();
-        passedTests = new ArrayList<>();
-        didntPassedTheory = new ArrayList<>();
-        didntPassedDriving = new ArrayList<>();
     }
 
     /**
-     * Tato metoda načítá první soubor, ve kterém jsou čárkou oddělené informace o jednotlivých účastnících autoškoly.
-     * První soubor obsahuje jméno, přijímení, pohlaví, počet bodů z teoretického testu a datum narození. 
-     * Metoda třídí účastníky dle počtu bodů, pokud mají méně než 45, neprošli teoretickými testy
-     * 
+     * Tato metoda načítá první soubor, ve kterém jsou čárkou oddělené informace
+     * o jednotlivých účastnících autoškoly. První soubor obsahuje jméno,
+     * přijímení, pohlaví, počet bodů z teoretického testu a datum narození.
+     * Metoda třídí účastníky dle počtu bodů, pokud mají méně než 45, neprošli
+     * teoretickými testy
+     *
      * @param filename jméno hledaného soubory s daty
      * @throws FileNotFoundException
      * @throws IOException
@@ -83,173 +79,152 @@ public class DrivingSchool implements AppInterface{
                 d = new Driver(firstName, secondName, testPoints, gender, birth, id);
 
                 drivers.add(d);
-                if (d.getTestPoints() < 45) {
-                    didntPassedTheory.add(d);
-                }
-
             }
         }
     }
 
     /**
-     * Tato metoda vypisuje první soubor, nic do něj není přidáno.
-     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
-     * Filtrace je založena na výběru dle pohlaví.
-     * Metoda sortuje účastníky dle výběru uživatele.
-     * Sortování je provedeno přes Comparable i Comparator.
-     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
      * 
-     * @param n parametr pro filtrování dle pohlaví
-     * @param compare parametr pro sortování dle uživatele
+     *
      * @return vrací StringBuilder s tabulkou účastníků autoškoly
      */
     @Override
-    public String printAllDrivers(int n, int compare) {
-        if (compare == 1) {
-            sortPoints sp = new sortPoints();
-            Collections.sort(drivers, sp);
-        }
-        if (compare == 2) {
-            sortPointsUp sp = new sortPointsUp();
-            Collections.sort(drivers, sp);
-        }
-        if (compare == 3) {
-            Collections.sort(drivers);
-        }
-        if (compare == 4) {
-            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
-            Collections.sort(didntPassedTheory, mapComparator);
-        }
+    public String printDrivers() {
         StringBuilder sb = new StringBuilder();
         for (Driver d : drivers) {
-            switch (n) {
-                case 1:
-                    sb.append(d).append("\n");
-                    break;
-                case 2:
-                    if (d.getGender() == 'F') {
-                        sb.append(d).append("\n");
-                    }
-                    break;
-                case 3:
-                    if (d.getGender() == 'M') {
-                        sb.append(d).append("\n");
-                    }
-                    break;
-                default:
-                    return "něco je špatně";
-            }
+            sb.append(d).append("\n");
         }
         return sb.toString();
     }
-
-    /**
-     * Metoda, co vypisuje účastníky autoškoly, kteří splnili teoretické testy tj. mají více než 45 bodů a splnili závěrečné jízdy -> mají autoškolu
-     * 
-     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
-     * Filtrace je založena na výběru dle pohlaví.
-     * Metoda sortuje účastníky dle výběru uživatele.
-     * Sortování je provedeno přes Comparable i Comparator.
-     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
-     * 
-     * @param n parametr pro filtrování dle pohlaví
-     * @param compare parametr pro sortování dle uživatele
-     * @return vrací StringBuilder s tabulkou účastníků autoškoly
-     */
-    @Override
-    public String printPassedDrivers(int n, int compare) {
-        if (compare == 1) {
-            sortPoints sp = new sortPoints();
-            Collections.sort(passedTests, sp);
-        }
-        if (compare == 2) {
-            sortPointsUp sp = new sortPointsUp();
-            Collections.sort(passedTests, sp);
-        }
-        if (compare == 3) {
-            Collections.sort(passedTests);
-        }
-        if (compare == 4) {
-            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
-            Collections.sort(didntPassedTheory, mapComparator);
-        }
+    
+    public String printPassedDrivers(){
         StringBuilder sb = new StringBuilder();
-        for (Driver d : passedTests) {
-            switch (n) {
-                case 1:
-                    sb.append(d).append("\n");
-                    break;
-                case 2:
-                    if (d.getGender() == 'F') {
-                        sb.append(d).append("\n");
-                    } else {
-                        break;
-                    }
-                    break;
-                case 3:
-                    if (d.getGender() == 'M') {
-                        sb.append(d).append("\n");
-                    }
-                    break;
-                default:
-                    return "něco je špatně";
+        for (Driver driver : drivers) {
+            if(driver.getDrivingTest() == true){
+                sb.append(driver).append("\n");
+            }
+        }
+        return sb.toString();
+    }
+    
+    public String printDidntPassedDriving(){
+        StringBuilder sb = new StringBuilder();
+        for (Driver driver : drivers) {
+            if(driver.getDrivingTest() == false && driver.getTestPoints() > 44){
+                sb.append(driver).append("\n");
+            }
+        }
+        return sb.toString();
+    }
+    
+    public String printDidntPassedTheory(){
+        StringBuilder sb = new StringBuilder();
+        for (Driver driver : drivers) {
+            if(driver.getTestPoints() < 45){
+                sb.append(driver).append("\n");
             }
         }
         return sb.toString();
     }
 
-    /**
-     * Teto metoda vypisuje nadpis tabulky Jméno, Přijímení, Pohlaví, Počet bodů a Datum narození
-     * @return metoda vrací String se záhlavím tabulky
-     */
-    @Override
-    public String printHeader() {
-        return String.format("%10s %10s %7s %10s %15s", "Jméno", "Přijímení", "Pohlaví", "Počet bodů", "Datum narození");
+    public void sortByPoints(){
+        Comparator c = new comparablePoints();
+        Collections.sort(drivers,c);
     }
-
+    
+    public void sortByPointsUp(){
+        Comparator c = new comparablePointsUp();
+        Collections.sort(drivers,c);
+    }
+    
+    public void sortByName(){
+        Collections.sort(drivers);
+    }
+    
+    public void sortByBirth(){
+        Comparator c = new comparableBirth();
+        Collections.sort(drivers, c);
+    }
+    
+    public String getStatisticPassedDrivers(){
+//        switch(n){
+//            case 2:
+//                drivers.subList(n, n)
+//        }
+        int averagePoints = 0;
+        int driversCount =0;
+        int femaleCount = 0;
+        int maleCount = 0;
+        for (Driver driver : drivers) {            
+            if(driver.getDrivingTest() == true && driver.getTestPoints() > 44){                
+                driversCount += 1;
+                averagePoints += driver.getTestPoints();
+                if(driver.getGender() == 'M'){
+                    maleCount += 1;
+                }else{
+                    femaleCount += 1;
+                }
+            }
+        }
+        return "Statistiky jezdců, co udělali autoškolu" +"\n"+
+                "Počet všech jezdců: " +driversCount +"\n"+
+                "Počet žen: " +femaleCount+ "\n" +
+                "Počet mužů: " +maleCount+ "\n" +
+                "Průměrný počet bodů: " +averagePoints/driversCount +"\n";
+    }
+    public int getNumberPassedDrivers(){
+        int sum = 0;
+        for (Driver driver : drivers) {
+            if(driver.getDrivingTest() == true){
+                sum += 1;
+            }
+        }
+        return sum;
+    }
+    
+    public int getNumberDidntPassedDriving(){
+        int numberDidntPassedD = 0;
+        for (Driver driver : drivers) {
+            if(driver.getDrivingTest() == false && driver.getTestPoints() > 44){
+                numberDidntPassedD += 1;
+            }
+        }
+        return numberDidntPassedD;
+    }
+    
+    public int getNumberDidntPassedTheory(){
+        int numberDidntPassedT = 0;
+        for (Driver driver : drivers) {
+            if(driver.getTestPoints() < 45){
+                numberDidntPassedT += 1;
+            }
+        }
+        return numberDidntPassedT;
+    }
+    
     /**
-     * Metoda slouží k ukládání dat do souboru txt nebo csv
-     * Třídí dle vstupních dat, jaký List má uložit
-     * 
+     * Metoda slouží k ukládání dat do souboru txt nebo csv Třídí dle vstupních
+     * dat, jaký List má uložit
+     *
      * @param filename parametr jméno souboru, volí uživatel
-     * @param choice parametr, který předává UI, aby metoda věděla, jakou tabulku uložit
+     * @param list
      * @throws java.io.IOException
      */
     @Override
-    public void saveResults(String filename, int choice) throws IOException {
+    public void saveResults(String filename, List<Driver> list) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
-            switch (choice) {
-                case 1:
-                    for (Driver driver : drivers) {
-                        pw.println(driver.toString());
-                    }
-                    break;
-                case 2:
-                    for (Driver driver : passedTests) {
-                        pw.println(driver.toString());
-                    }
-                    break;
-                case 3:
-                    for (Driver driver : didntPassedTheory) {
-                        pw.println(driver.toString());
-                    }
-                    break;
-                case 4:
-                    for (Driver driver : didntPassedDriving) {
-                        pw.println(driver.toString());
-                    }
-                    break;
-                default:
-                    System.out.println("Obraťte se na podporu, prosím.");
+            for (Driver driver : list) {
+                pw.println(driver.toString());
             }
 
         }
     }
 
     /**
-     * Metoda načítá druhý soubor s daty, který obsahuje jméno, přijímení a boolean, zda účastníci uspěli v závěrečných zkouškách
-     * Metoda třídí účastníky do Listů dle výsledků ze závěrečných zkoušek (boolean)
-     * 
+     * Metoda načítá druhý soubor s daty, který obsahuje jméno, přijímení a
+     * boolean, zda účastníci uspěli v závěrečných zkouškách Metoda třídí
+     * účastníky do Listů dle výsledků ze závěrečných zkoušek (boolean)
+     *
      * @param filename jméno vstupního souboru
      * @throws FileNotFoundException
      * @throws IOException
@@ -269,223 +244,63 @@ public class DrivingSchool implements AppInterface{
                 id = Integer.parseInt(parts[0]);
                 driveTest = Boolean.parseBoolean(parts[1]);
                 driveDate = LocalDate.parse(parts[2], dtf);
-                if (driveTest == true) {
-                    for (Driver r : drivers) {
-                        if (r.getId() == id) {                            
-                            passedTests.add(r);
-                        }
+                for (Driver driver : drivers) {
+                    if (id == driver.getId()) {
+                        driver.setDrivingTest(driveTest);
                     }
-                } else {
-                    for (Driver r : drivers) {
-                        if (r.getId() == id) {
-                            didntPassedDriving.add(r);
-                        }
-                    }
-
                 }
             }
         }
     }
 
     /**
-     * Tato metoda vypisuje účastníky, kteří nenapsali teoretické testy tj. měli méně než 45 bodů
-     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
-     * Filtrace je založena na výběru dle pohlaví.
-     * Metoda sortuje účastníky dle výběru uživatele.
-     * Sortování je provedeno přes Comparable i Comparator.
-     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
-     * 
-     * @param n parametr pro filtrování dle pohlaví
-     * @param compare parametr pro sortování dle uživatele
-     * @return vrací StringBuilder s tabulkou účastníků autoškoly
-     */
-    @Override
-    public String printDidintPassedTheory(int n, int compare) {
-        if (compare == 1) {
-            sortPoints sp = new sortPoints();
-            Collections.sort(didntPassedTheory, sp);
-        }
-        if (compare == 2) {
-            sortPointsUp sp = new sortPointsUp();
-            Collections.sort(didntPassedTheory, sp);
-        }
-        if (compare == 3) {
-            Collections.sort(didntPassedTheory);
-        }
-        if (compare == 4) {
-            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
-            Collections.sort(didntPassedTheory, mapComparator);
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Driver d : didntPassedTheory) {
-            switch (n) {
-                case 1:
-                    sb.append(d).append("\n");
-                    break;
-                case 2:
-                    if (d.getGender() == 'F') {
-                        sb.append(d).append("\n");   //tady je problém, stejně tak case 3 
-                        break;
-                    }
-                    break;
-                case 3:
-                    if (d.getGender() == 'M') {
-                        sb.append(d).append("\n");
-                        break;
-                    }
-                    break;
-                default:
-                    return "něco je špatně";
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Tato metoda vypisuje účastníky, kteří mají více než 45 bodů, ale neuspěli v závěrečných zkouškách
-     * Metoda filtruje účastníky dle toho, co si uživatel zvolí v UI.
-     * Filtrace je založena na výběru dle pohlaví.
-     * Metoda sortuje účastníky dle výběru uživatele.
-     * Sortování je provedeno přes Comparable i Comparator.
-     * Sortuje dle bodů sestupně, vzestupně a dle křestního jména dle české abecedy.
-     * 
-     * @param n parametr pro filtrování dle pohlaví
-     * @param compare parametr pro sortování dle uživatele
-     * @return vrací StringBuilder s tabulkou účastníků autoškoly
-     */
-    @Override
-    public String printDidntPassedDriving(int n, int compare) {
-        if (compare == 1) {
-            sortPoints sp = new sortPoints();
-            Collections.sort(didntPassedDriving, sp);
-        }
-        if (compare == 2) {
-            sortPointsUp sp = new sortPointsUp();
-            Collections.sort(didntPassedDriving, sp);
-        }
-        if (compare == 3) {
-            Collections.sort(didntPassedDriving);
-        }
-        if (compare == 4) {
-            Comparator<Driver> mapComparator = (Driver a, Driver b) -> a.getBirthDate().compareTo(b.getBirthDate());
-            Collections.sort(didntPassedTheory, mapComparator);
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Driver d : didntPassedDriving) {
-            switch (n) {
-                case 1:
-                    sb.append(d).append("\n");
-                    break;
-                case 2:
-                    if (d.getGender() == 'F') {
-                        sb.append(d).append("\n");
-                    }
-                    break;
-                case 3:
-                    if (d.getGender() == 'M') {
-                        sb.append(d).append("\n");
-                    }
-                    break;
-                default:
-                    return "něco je špatně";
-            }
-
-        }
-        return sb.toString();
-    }
-    
-    /**
      * Metoda slouží pro uložení dat do binárního souboru
-     * 
+     *
      * @param resultFile jméno souboru, volí uživatel
-     * @param n nevolí uživatel, jen pro program, aby věděl, jaký ArrayList má uložit
      * @throws FileNotFoundException
      * @throws IOException
      */
     @Override
-    public void saveResultsToBinary(File resultFile, int n) throws FileNotFoundException, IOException{
-        List<Driver> list = new ArrayList<>();
-        switch(n){
-            case 1:
-                list = drivers;
-                break;
-            case 2:
-                list = passedTests;
-                break;
-            case 3:
-                list = didntPassedTheory;
-                break;
-            case 4:
-                list = didntPassedDriving;
-                break;
-            default:
-                System.out.println("Obraťte se na podporu");
-                break;
-        }
-        try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(resultFile))){
-            for (Driver driver : list) {
+    public void saveResultsToBinary(File resultFile) throws FileNotFoundException, IOException {
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(resultFile))) {
+            for (Driver driver : drivers) {
                 dos.writeInt(driver.getTestPoints());
                 dos.writeUTF(driver.getFirstName());
                 int nChars = driver.getSecondName().length();
                 dos.writeInt(nChars);
                 for (int i = 0; i < nChars; i++) {
-                    dos.writeChar(driver.getSecondName().charAt(i));   
-                }              
+                    dos.writeChar(driver.getSecondName().charAt(i));
+                }
             }
         }
     }
-      /**
-     * Metoda slouží k ukládání dat do souboru pdf
-     * Využita externí knihovna iText
-     * 
+
+    /**
+     * Metoda slouží k ukládání dat do souboru pdf Využita externí knihovna
+     * iText
+     *
      * @param filename parametr jméno souboru, volí uživatel
-     * @param n nevolí uživatel, jen pro program, aby věděl, jaký ArrayList má uložit
      * @throws java.io.FileNotFoundException
      * @throws com.itextpdf.text.DocumentException
      */
     @Override
-    public void savePDF(String filename, int n) throws FileNotFoundException, DocumentException{
+    public void savePDF(String filename) throws FileNotFoundException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document,new FileOutputStream(filename+".pdf"));
-        
-        com.itextpdf.text.List a = new com.itextpdf.text.List();
-        switch(n){
-            case 1:
-                for (Driver driver : drivers) {
-                a.add(driver.toString());  
-                }
-                break;
-            case 2:
-                for (Driver driver : passedTests) {
-                a.add(driver.toString());  
-                }
-                break;
-            case 3:
-                for (Driver driver : didntPassedTheory) {
-                a.add(driver.toString());  
-                }
-                break;
-            case 4:
-                for (Driver driver : didntPassedDriving) {
-                a.add(driver.toString());  
-                }
-                break;
-            default:
-                System.out.println("Obraťte se na podporu");
-                break;
-        }
-        
+        PdfWriter.getInstance(document, new FileOutputStream(filename + ".pdf"));
 
-        document.open();
-        document.add(new Paragraph("Seznam požadovaných jezdcu"));
-        document.add(a);
-        document.close();
-        
-            
+        com.itextpdf.text.List a = new com.itextpdf.text.List();
+        for (Driver driver : drivers) {
+            a.add(driver.toString());
+
+            document.open();
+            document.add(new Paragraph("Seznam požadovaných jezdcu"));
+            document.add(a);
+            document.close();
+
         }
-    
-        public static void main(String[] args) throws IOException, DocumentException {
-        DrivingSchool ds = new DrivingSchool();        
+    }
+    public static void main(String[] args) throws IOException, DocumentException {
+        DrivingSchool ds = new DrivingSchool();
         String nevimco = "results/dalsi";
         File file = new File(nevimco);
         file.getParentFile().mkdirs();
@@ -496,6 +311,5 @@ public class DrivingSchool implements AppInterface{
 //        }
         System.out.println("Ahoj");
     }
-       
+
 }
- 

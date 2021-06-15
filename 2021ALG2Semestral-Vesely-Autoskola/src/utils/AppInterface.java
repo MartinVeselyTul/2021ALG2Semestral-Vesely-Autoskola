@@ -5,10 +5,12 @@
  */
 package utils;
 
+import app.Driver;
 import com.itextpdf.text.DocumentException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -16,13 +18,10 @@ import java.io.IOException;
  */
 public interface AppInterface {
     public void loadResults(String filename) throws FileNotFoundException, IOException;
-    public String printAllDrivers(int n, int compare);
-    public String printPassedDrivers(int n, int compare);
-    public String printHeader();
-    public void saveResults(String filename, int choice) throws IOException;
+    public String printDrivers();
+    public void saveResults(String filename, List<Driver> list) throws IOException;
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException;
-    public String printDidintPassedTheory(int n, int compare);
-    public String printDidntPassedDriving(int n, int compare);
-    public void saveResultsToBinary(File resultFile, int n) throws FileNotFoundException, IOException;
-    public void savePDF(String filename, int n)throws IOException, DocumentException ;
+    public void saveResultsToBinary(File resultFile) throws FileNotFoundException, IOException;
+    public void savePDF(String filename) throws FileNotFoundException, DocumentException;
+    
 }

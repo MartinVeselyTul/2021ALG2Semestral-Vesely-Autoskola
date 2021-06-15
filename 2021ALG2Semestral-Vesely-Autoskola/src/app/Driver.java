@@ -25,6 +25,7 @@ public class Driver implements Comparable<Driver>{
     private char gender;
     private LocalDate birthDate;
     private int id;
+    private boolean drivingTest;   
     
     //hodnoty pro settre
 
@@ -61,6 +62,14 @@ public class Driver implements Comparable<Driver>{
         return id;
     }        
 
+    public void setDrivingTest(boolean drivingTest) {
+        this.drivingTest = drivingTest;
+    }
+
+    public boolean getDrivingTest() {
+        return drivingTest;
+    }
+
     @Override
     public String toString() {        
         return  String.format("%10s %10s %4s %9d %17s", firstName,secondName,gender,testPoints, birthDate.format(DateTimeFormatter.ISO_DATE));        
@@ -74,17 +83,24 @@ public class Driver implements Comparable<Driver>{
         
 }
 
-class sortPoints implements Comparator<Driver>{
+class comparablePoints implements Comparator<Driver>{
     @Override
     public int compare(Driver a, Driver b){
         return Integer.compare(b.getTestPoints(), a.getTestPoints());
     }
 }
 
-class sortPointsUp implements Comparator<Driver>{
+class comparablePointsUp implements Comparator<Driver>{
     @Override
     public int compare(Driver a, Driver b){
         return Integer.compare(a.getTestPoints(), b.getTestPoints());
+    }    
+}
+
+class comparableBirth implements Comparator<Driver>{
+    @Override
+    public int compare(Driver a, Driver b){    
+        return a.getBirthDate().compareTo(b.getBirthDate());
     }
 }
 
