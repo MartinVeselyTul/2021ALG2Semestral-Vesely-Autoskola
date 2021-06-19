@@ -38,7 +38,7 @@ public class DrivingSchool implements AppInterface {
     private List<Driver> drivers;
 
     public DrivingSchool() {
-        drivers = new ArrayList<>();
+        drivers = new ArrayList<>();        
     }
 
     /**
@@ -97,109 +97,110 @@ public class DrivingSchool implements AppInterface {
         return sb.toString();
     }
     
-    public String printPassedDrivers(){
-        StringBuilder sb = new StringBuilder();
-        for (Driver driver : drivers) {
+    /**
+     * Tato metoda slouží k upravení Ar.Listu drivers dle výběru uživatele. Pouze upraví AList, se kterým program dále pracuje
+     * Výstupem je AList jezdců, co splnili autoškolu
+     */
+    @Override
+    public void getPassedDrivers(){
+        //StringBuilder sb = new StringBuilder();        
+        List<Driver>list = new ArrayList<>(drivers);
+        drivers.clear();
+        for (Driver driver : list) {
             if(driver.getDrivingTest() == true){
-                sb.append(driver).append("\n");
+                drivers.add(driver);
+                //sb.append(driver).append("\n");
             }
-        }
-        return sb.toString();
+        }        
     }
     
-    public String printDidntPassedDriving(){
-        StringBuilder sb = new StringBuilder();
-        for (Driver driver : drivers) {
+    /**
+     * Tato metoda slouží k upravení Ar.Listu drivers dle výběru uživatele. Pouze upraví AList, se kterým program dále pracuje
+     * Výstupem je AList jezců, co neudělali závěrečné jízdy
+     */
+    @Override
+    public void getDidntPassedDriving(){
+        List<Driver>list = new ArrayList<>(drivers);
+        drivers.clear();
+        for (Driver driver : list) {
             if(driver.getDrivingTest() == false && driver.getTestPoints() > 44){
-                sb.append(driver).append("\n");
+                drivers.add(driver);
             }
         }
-        return sb.toString();
     }
     
-    public String printDidntPassedTheory(){
-        StringBuilder sb = new StringBuilder();
-        for (Driver driver : drivers) {
+    /**
+     * Tato metoda slouží k upravení Ar.Listu drivers dle výběru uživatele. Pouze upraví AList, se kterým program dále pracuje
+     * Výstupem je AList jezdců, co nezvládli teoretické otázky
+     */
+    @Override
+    public void getDidntPassedTheory(){
+        List<Driver>list = new ArrayList<>(drivers);
+        drivers.clear();
+        for (Driver driver : list) {
             if(driver.getTestPoints() < 45){
-                sb.append(driver).append("\n");
+                drivers.add(driver);
             }
         }
-        return sb.toString();
     }
 
+    /**
+     * Metoda seřazuje ArrayList drivers dle bodů sestupně
+     */
+    @Override
     public void sortByPoints(){
         Comparator c = new comparablePoints();
         Collections.sort(drivers,c);
     }
     
+    /**
+     * Metoda seřazuje ArrayList drivers dle bodů vzestupně
+     */
+    @Override
     public void sortByPointsUp(){
         Comparator c = new comparablePointsUp();
         Collections.sort(drivers,c);
     }
     
+    /**
+     * Metoda seřazuje ArrayList drivers dle křestního jména
+     */
+    @Override
     public void sortByName(){
         Collections.sort(drivers);
     }
     
+    /**
+     * Metoda seřazuje ArrayList drivers dle data
+     */
+    @Override
     public void sortByBirth(){
         Comparator c = new comparableBirth();
         Collections.sort(drivers, c);
     }
     
-    public String getStatisticPassedDrivers(){
-//        switch(n){
-//            case 2:
-//                drivers.subList(n, n)
-//        }
-        int averagePoints = 0;
-        int driversCount =0;
-        int femaleCount = 0;
-        int maleCount = 0;
-        for (Driver driver : drivers) {            
-            if(driver.getDrivingTest() == true && driver.getTestPoints() > 44){                
-                driversCount += 1;
-                averagePoints += driver.getTestPoints();
-                if(driver.getGender() == 'M'){
+    /**
+     * Metoda počítá informace o ArrayListu jezdců
+     * @return metoda vrací String s vypočítanými daty a údaji
+     */
+    @Override
+    public String getStatistic(){
+        int averagePoints, numberOfDrivers,femaleCount, maleCount;
+        averagePoints = numberOfDrivers = femaleCount = maleCount = 0;
+        for (Driver driver : drivers) {
+            numberOfDrivers += 1;
+            averagePoints += driver.getTestPoints();
+            if(driver.getGender() == 'M'){
                     maleCount += 1;
                 }else{
                     femaleCount += 1;
                 }
-            }
         }
-        return "Statistiky jezdců, co udělali autoškolu" +"\n"+
-                "Počet všech jezdců: " +driversCount +"\n"+
+        return "Statistiky zvolených jezdců" +"\n"+
+                "Počet všech jezdců: " +numberOfDrivers +"\n"+
                 "Počet žen: " +femaleCount+ "\n" +
                 "Počet mužů: " +maleCount+ "\n" +
-                "Průměrný počet bodů: " +averagePoints/driversCount +"\n";
-    }
-    public int getNumberPassedDrivers(){
-        int sum = 0;
-        for (Driver driver : drivers) {
-            if(driver.getDrivingTest() == true){
-                sum += 1;
-            }
-        }
-        return sum;
-    }
-    
-    public int getNumberDidntPassedDriving(){
-        int numberDidntPassedD = 0;
-        for (Driver driver : drivers) {
-            if(driver.getDrivingTest() == false && driver.getTestPoints() > 44){
-                numberDidntPassedD += 1;
-            }
-        }
-        return numberDidntPassedD;
-    }
-    
-    public int getNumberDidntPassedTheory(){
-        int numberDidntPassedT = 0;
-        for (Driver driver : drivers) {
-            if(driver.getTestPoints() < 45){
-                numberDidntPassedT += 1;
-            }
-        }
-        return numberDidntPassedT;
+                "Průměrný počet bodů: " +averagePoints/numberOfDrivers +"\n";
     }
     
     /**
@@ -207,13 +208,12 @@ public class DrivingSchool implements AppInterface {
      * dat, jaký List má uložit
      *
      * @param filename parametr jméno souboru, volí uživatel
-     * @param list
      * @throws java.io.IOException
      */
     @Override
-    public void saveResults(String filename, List<Driver> list) throws IOException {
+    public void saveResults(String filename) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename))))) {
-            for (Driver driver : list) {
+            for (Driver driver : drivers) {
                 pw.println(driver.toString());
             }
 
@@ -261,7 +261,7 @@ public class DrivingSchool implements AppInterface {
      * @throws IOException
      */
     @Override
-    public void saveResultsToBinary(File resultFile) throws FileNotFoundException, IOException {
+    public void saveResultsToBinary(String resultFile) throws FileNotFoundException, IOException {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(resultFile))) {
             for (Driver driver : drivers) {
                 dos.writeInt(driver.getTestPoints());
@@ -291,13 +291,13 @@ public class DrivingSchool implements AppInterface {
         com.itextpdf.text.List a = new com.itextpdf.text.List();
         for (Driver driver : drivers) {
             a.add(driver.toString());
-
+        }
             document.open();
             document.add(new Paragraph("Seznam požadovaných jezdcu"));
             document.add(a);
             document.close();
 
-        }
+        
     }
     public static void main(String[] args) throws IOException, DocumentException {
         DrivingSchool ds = new DrivingSchool();

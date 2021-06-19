@@ -5,12 +5,9 @@
  */
 package utils;
 
-import app.Driver;
 import com.itextpdf.text.DocumentException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 /**
  *
@@ -19,9 +16,18 @@ import java.util.List;
 public interface AppInterface {
     public void loadResults(String filename) throws FileNotFoundException, IOException;
     public String printDrivers();
-    public void saveResults(String filename, List<Driver> list) throws IOException;
+    public void getPassedDrivers();
+    public void getDidntPassedDriving();
+    public void getDidntPassedTheory();
+    public void sortByPoints();
+    public void sortByPointsUp();
+    public void sortByName();
+    public void sortByBirth();
+    public String getStatistic();
+    public void saveResults(String filename) throws IOException;
     public void loadDrivingTests(String filename) throws FileNotFoundException, IOException;
-    public void saveResultsToBinary(File resultFile) throws FileNotFoundException, IOException;
+    public void saveResultsToBinary(String resultFile) throws FileNotFoundException, IOException;
     public void savePDF(String filename) throws FileNotFoundException, DocumentException;
+    
     
 }
