@@ -32,18 +32,13 @@ public class DrivingSchoolUI {
                 System.out.println(UICodeSaver.start());
                 System.out.println("");
                 System.out.println(UICodeSaver.menu());
-
                 try {
-
                     try {
-
                         userChoiceMain();
-
                     } catch (FileNotFoundException | DocumentException ex) {
                         //Logger.getLogger(DrivingSchoolUI.class.getName()).log(Level.SEVERE, null, ex);
                         System.out.println("V kódu nastala chyba " + ex);
                     }
-
                 } catch (InputMismatchException e) {
                     System.out.println("Pouze celá čísla prosíme" + e.getMessage());
                     System.out.println("Program se automaticky restartoval");
